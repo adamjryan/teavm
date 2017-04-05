@@ -26,7 +26,7 @@ public final class Example {
     }
 
     public static void main(String[] args) {
-        testFibonacci();
+        /*testFibonacci();
         testClasses();
         testVirtualCall();
         testInstanceOf();
@@ -36,10 +36,10 @@ public final class Example {
         testArrayList();
         testArrayCopy();
         testArrayIsObject();
-        testIsAssignableFrom();
+        testIsAssignableFrom();*/
         testExceptions();
-        testBigInteger();
-        testGC();
+        //testBigInteger();
+        //testGC();
     }
 
     private static void testBigInteger() {
@@ -191,6 +191,7 @@ public final class Example {
         try {
             throwsException();
         } catch (IllegalStateException e) {
+            e.printStackTrace();
             System.out.println("Caught 1: " + e.getMessage());
         }
 

@@ -302,7 +302,7 @@ public class WasmTarget implements TeaVMTarget {
         context.addIntrinsic(mutatorIntrinsic);
         context.addIntrinsic(new ShadowStackIntrinsic());
         ExceptionHandlingIntrinsic exceptionHandlingIntrinsic = new ExceptionHandlingIntrinsic(binaryWriter,
-                classGenerator);
+                classGenerator, stringPool);
         context.addIntrinsic(exceptionHandlingIntrinsic);
 
         WasmGenerator generator = new WasmGenerator(decompiler, classes, context, classGenerator, binaryWriter);
