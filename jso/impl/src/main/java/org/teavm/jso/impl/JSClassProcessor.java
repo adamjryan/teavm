@@ -56,7 +56,6 @@ import org.teavm.model.ClassHolder;
 import org.teavm.model.ClassReader;
 import org.teavm.model.ClassReaderSource;
 import org.teavm.model.ElementModifier;
-import org.teavm.model.FieldHolder;
 import org.teavm.model.Instruction;
 import org.teavm.model.MethodDescriptor;
 import org.teavm.model.MethodHolder;
@@ -81,8 +80,8 @@ class JSClassProcessor {
     private final ClassReaderSource classSource;
     private final JSBodyRepository repository;
     private final JavaInvocationProcessor javaInvocationProcessor;
-    private Program program;
-    private final List<Instruction> replacement = new ArrayList<>();
+    Program program;
+    final List<Instruction> replacement = new ArrayList<>();
     private final JSTypeHelper typeHelper;
     private final Diagnostics diagnostics;
     private int methodIndexGenerator;
@@ -201,21 +200,6 @@ class JSClassProcessor {
                 .filter(Objects::nonNull)
                 .findFirst()
                 .orElse(null);
-    }
-
-    public void addFunctorField(ClassHolder cls, MethodReference method) {
-        if (cls.getAnnotations().get(FunctorImpl.class.getName()) != null) {
-            return;
-        }
-
-        FieldHolder field = new FieldHolder("$$jso_functor$$");
-        field.setLevel(AccessLevel.PUBLIC);
-        field.setType(ValueType.parse(JSObject.class));
-        cls.addField(field);
-
-        AnnotationHolder annot = new AnnotationHolder(FunctorImpl.class.getName());
-        annot.getValues().put("value", new AnnotationValue(method.getDescriptor().toString()));
-        cls.getAnnotations().add(annot);
     }
 
     public void makeSync(ClassHolder cls) {
@@ -745,7 +729,7 @@ class JSClassProcessor {
         return var;
     }
 
-    private Variable unwrap(CallLocation location, Variable var, ValueType type) {
+    Variable unwrap(CallLocation location, Variable var, ValueType type) {
         if (type instanceof ValueType.Primitive) {
             switch (((ValueType.Primitive) type).getKind()) {
                 case BOOLEAN:
@@ -1020,7 +1004,7 @@ class JSClassProcessor {
         return functor;
     }
 
-    private Variable wrap(Variable var, ValueType type, TextLocation location, boolean byRef) {
+    Variable wrap(Variable var, ValueType type, TextLocation location, boolean byRef) {
         if (byRef) {
             InvokeInstruction insn = new InvokeInstruction();
             insn.setMethod(new MethodReference(JS.class, "arrayData", Object.class, JSObject.class));
